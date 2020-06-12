@@ -147,6 +147,11 @@ def isight_prepare_data_request(a_url, a_query, a_pub_key, a_prv_key):
         
 ###################################################start###############################        
  if __name__ == '__main__':
+    
+    URL=["https://api.silobreaker.com/search/documents?q=Sweden&type=json","https://api.silobreaker.com/v1/network"]
+
+for nurl in URL:
+    print('######nurl####')
     # If loglevel equals DEBUG, log the time the script ran.
     PySilo_settings.logger.debug('PySilo2MISP started at %s', datetime.datetime.now(datetime.timezone.utc))
     if PySilo_settings.debug_mode:
@@ -157,7 +162,7 @@ def isight_prepare_data_request(a_url, a_query, a_pub_key, a_prv_key):
 
     # Retrieve FireEye iSight indicators of the last x hours
     print('#######hello########')
-    result = isight_search_indicators(PySilo_settings.isight_url, PySilo_settings.SharedKey,PySilo_settings.APIKey, PySilo_settings.isight_last_hours)
+    result = isight_search_indicators(nurl, PySilo_settings.SharedKey,PySilo_settings.APIKey, PySilo_settings.isight_last_hours)
   # PySilo_settings.logger.debug("url:",PySilo_settings.isight_url,"shared key:", PPySilo_settings.SharedKey,"APIKey:",PySilo_settings.APIKey,"hrs",PySilo_settings_last_hours)
     print('####result####',result)
     #fetch(result)
