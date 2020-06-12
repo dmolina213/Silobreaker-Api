@@ -384,44 +384,30 @@ def create_misp_event(misp_instance, isight_report_instance):
     PySilo_settings.logger.debug('Created MISP event %s for iSight report %s', event, isight_report_instance.reportId)
 
     # Add default tags to the event.
-    misp_instance.tag(my_event, 'basf:classification="internal"')
+    misp_instance.tag(my_event, 'Source:SILOBREAKER')
     #misp_instance.tag(my_event, 'basf:source="iSight"')
-    misp_instance.tag(my_event, 'CTI feed: Fireeye:iSight')
+    misp_instance.tag(my_event, 'CTI feed: SILOBREAKER')
     misp_instance.tag(my_event, 'tlp:amber')
-    misp_instance.tag(my_event, 'report id', isight_report_instance.reportId)
+    #misp_instance.tag(my_event, 'report id', isight_report_instance.reportId)
     
                                                                      
 
     # Use some iSight ThreatScapes for event tagging. Reports can have multiple ThreatScapes.
-    if 'Cyber Espionage' in isight_report_instance.ThreatScape:
+    #if 'Cyber Espionage' in isight_report_instance.ThreatScape:
         # VERIS distinguishes between external, internal or partner actors. This difference is not yet implemented in
         # MISP. External would be most likely.
         #misp_instance.tag(my_event, 'veris:actor:external:motive="Espionage"')
-        misp_instance.tag(my_event, 'veris:actor:motive="Espionage"')
-    if 'Hacktivism' in isight_report_instance.ThreatScape:
-        misp_instance.tag(my_event, 'veris:actor:external:variety="Activist"')
-    if 'Critical Infrastructure' in isight_report_instance.ThreatScape:
-        misp_instance.tag(my_event, 'basf:technology="OT"')
-    if 'Cyber Physical' in isight_report_instance.ThreatScape:
-        misp_instance.tag(my_event, 'basf:technology="OT"')
-    if 'Cyber Crime' in isight_report_instance.ThreatScape:
-        misp_instance.tag(my_event, 'veris:actor:external:variety="Organized crime"')
+        #misp_instance.tag(my_event, 'veris:actor:motive="Espionage"')
+    #if 'Hacktivism' in isight_report_instance.ThreatScape:
+        #misp_instance.tag(my_event, 'veris:actor:external:variety="Activist"')
+    #if 'Critical Infrastructure' in isight_report_instance.ThreatScape:
+       # misp_instance.tag(my_event, 'basf:technology="OT"')
+    #if 'Cyber Physical' in isight_report_instance.ThreatScape:
+        #misp_instance.tag(my_event, 'basf:technology="OT"')
+    #if 'Cyber Crime' in isight_report_instance.ThreatScape:
+        #misp_instance.tag(my_event, 'veris:actor:external:variety="Organized crime"')
 
-    # Add the iSight report ID and web link as attributes.
-    if isight_report_instance.reportId:
-        misp_instance.add_attribute(my_event, {'category': 'External analysis', 'type': 'text', 'to_ids': False,
-                                               'value': isight_report_instance.reportId}, pythonify=True)
-    if isight_report_instance.webLink:
-        misp_instance.add_attribute(my_event, {'category': 'External analysis', 'type': 'link', 'to_ids': False,
-                                               'value': isight_report_instance.webLink}, pythonify=True)
-
-    # Put the ThreatScape into an Attribution attribute, but disable correlation.
-    if isight_report_instance.ThreatScape:
-        misp_instance.add_attribute(my_event, {'category': 'Attribution', 'type': 'text', 'to_ids': False,
-                                               'value': isight_report_instance.ThreatScape,
-                                               'disable_correlation': True}, pythonify=True)
-
-    # Add specific attributes from this iSight report.
+   
     update_misp_event(misp_instance, my_event, isight_report_instance)
 
 
