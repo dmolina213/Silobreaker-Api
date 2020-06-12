@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-#PySight3.py
+#PySilo3.py
 """
 Created on Sep 20, 2016
 Modified: May 12, 2020
@@ -31,7 +31,7 @@ import urllib3
 import PySilo_settings
 
 # Import our own iSight report model.
-from model.pySightReport import pySightReport
+from model.PySiloReport import PySiloReport
 
 # Suppress insecure HTTPS request warnings.
 urllib3.disable_warnings()
@@ -48,16 +48,16 @@ def error_handling(e, a_string):
     :rtype:
     """
     if hasattr(e, 'message'):
-        PySight_settings.logger.debug('%s %s', a_string, e.message)
+        PySilo_settings.logger.debug('%s %s', a_string, e.message)
     import traceback
-    PySight_settings.logger.debug('1 %s', e.__doc__)
-    PySight_settings.logger.debug('2 %s', sys.exc_info())
-    PySight_settings.logger.debug('3 %s', sys.exc_info()[0])
-    PySight_settings.logger.debug('4 %s', sys.exc_info()[1])
-    #PySight_settings.logger.debug('5 %s', sys.exc_info()[2], 'Sorry I mean line...',
+    PySilo_settings.logger.debug('1 %s', e.__doc__)
+    PySilo_settings.logger.debug('2 %s', sys.exc_info())
+    PySilo_settings.logger.debug('3 %s', sys.exc_info()[0])
+    PySilo_settings.logger.debug('4 %s', sys.exc_info()[1])
+    #PySilo_settings.logger.debug('5 %s', sys.exc_info()[2], 'Sorry I mean line...',
     #                              traceback.tb_lineno(sys.exc_info()[2]))
     ex_type, ex, tb = sys.exc_info()
-    PySight_settings.logger.debug('6 %s', traceback.print_tb(tb))
+    PySilo_settings.logger.debug('6 %s', traceback.print_tb(tb))
     return sys, traceback
 
 
@@ -99,12 +99,12 @@ def update_misp_event(misp_instance, event, isight_alert):
     #
     # Unused iSight fields: observationTime
 
-    PySight_settings.logger.debug('Updating the event %s', event)
+    PySilo_settings.logger.debug('Updating the event %s', event)
 
     # Verify that misp_instance is of the correct type
     #if not isinstance(misp_instance, PyMISP):
     if not isinstance(misp_instance, ExpandedPyMISP):
-        PySight_settings.logger.debug('Parameter misp_instance is not a PyMISP object')
+        PySilo_settings.logger.debug('Parameter misp_instance is not a PyMISP object')
         return False
 
     # Determine whether the to_ids flag shall be set.
@@ -341,7 +341,7 @@ def update_misp_event(misp_instance, event, isight_alert):
     # Lastly, publish the event without sending an alert email.
     # This command expects the event ID instead of a MISPevent as argument.
     print('#####publishing event:', event['id])
-    PySight_settings.logger.debug('#####publishing event: %s', event['id],isight_alert.reportId) 
+    PySilo_settings.logger.debug('#####publishing event: %s', event['id],isight_alert.reportId) 
     event.attribute.add_tag('ISIGHT APIv3')                                                
     #misp_instance.publish(event['id'], alert=False)
 
@@ -381,7 +381,7 @@ def create_misp_event(misp_instance, isight_report_instance):
     print("#######Push event to MISP server####",my_event)
 
            
-    PySight_settings.logger.debug('Created MISP event %s for iSight report %s', event, isight_report_instance.reportId)
+    PySilo_settings.logger.debug('Created MISP event %s for iSight report %s', event, isight_report_instance.reportId)
 
     # Add default tags to the event.
     misp_instance.tag(my_event, 'basf:classification="internal"')
@@ -433,21 +433,21 @@ def check_misp_all_results(a_result):
     :return: previous event from MISP
     :rtype:
     """
-    # PySight_settings.logger.debug('Checking %s if it contains previous events', a_result)
+    # PySilo_settings.logger.debug('Checking %s if it contains previous events', a_result)
     if 'message' in a_result:
         if a_result['message'] == 'No matches.':
-            PySight_settings.logger.debug('No existing MISP event found')
+            PySilo_settings.logger.debug('No existing MISP event found')
             # has really no event
             return False
     elif 'Event' in a_result[0]:
         previous_event = a_result[0]['Event']['id']
         print('#####previous event#######:',previous_event,'e[][]',event['Event']['id'])                                                             
-        PySight_settings.logger.debug('Found an existing MISP event with ID %s', previous_event)
+        PySilo_settings.logger.debug('Found an existing MISP event with ID %s', previous_event)
         return previous_event
     else:
         for e in a_result['response']:
             previous_event = e['Event']['id']
-            PySight_settings.logger.debug('Found an existing MISP event with ID %s', previous_event)
+            PySilo_settings.logger.debug('Found an existing MISP event with ID %s', previous_event)
             return previous_event
 
 
@@ -467,7 +467,7 @@ def misp_check_for_previous_event(misp_instance, isight_alert):
     event = False
 
     if misp_instance is None:
-        PySight_settings.logger.debug('No MISP instance provided')
+        PySilo_settings.logger.debug('No MISP instance provided')
         return False
 
     # Search based on report ID.
@@ -485,7 +485,7 @@ def misp_check_for_previous_event(misp_instance, isight_alert):
             event = check_misp_all_results(result)
 
     if not result:
-        PySight_settings.logger.debug('Found no existing event for iSight report ID %s', isight_alert.reportId)
+        PySilo_settings.logger.debug('Found no existing event for iSight report ID %s', isight_alert.reportId)
 
     return event
 
@@ -499,29 +499,29 @@ def get_misp_instance():
     :rtype: PyMISP
     """
     # Proxy settings are taken from the config file and converted to a dict.
-    if PySight_settings.USE_MISP_PROXY:
+    if PySilo_settings.USE_MISP_PROXY:
         misp_proxies = {
-            'http': str(PySight_settings.proxy_address),
-            'https': str(PySight_settings.proxy_address)
+            'http': str(PySilo_settings.proxy_address),
+            'https': str(PySilo_settings.proxy_address)
         }
     else:
         misp_proxies = {}
 
     try:
         # URL of the MISP instance, API key and SSL certificate validation are taken from the config file.
-        return ExpandedPyMISP(PySight_settings.misp_url, PySight_settings.misp_key, PySight_settings.misp_verifycert,
+        return ExpandedPyMISP(PySilo_settings.misp_url, PySilo_settings.misp_key, PySilo_settings.misp_verifycert,
                               proxies=misp_proxies)
-        #return PyMISP(PySight_settings.misp_url, PySight_settings.misp_key, PySight_settings.misp_verifycert,
+        #return PyMISP(PySilo_settings.misp_url, PySilo_settings.misp_key, PySilo_settings.misp_verifycert,
         #              proxies=misp_proxies)
     except Exception:
-        PySight_settings.logger.debug('Unexpected error in MISP init: %s', sys.exc_info())
+        PySilo_settings.logger.debug('Unexpected error in MISP init: %s', sys.exc_info())
         return False
 
 
 # Process one FireEye iSight report and convert it into a MISP events.
 def process_isight_indicator(a_json):
     """
-    Create a pySightAlert instance of the json and make all the mappings
+    Create a PySiloAlert instance of the json and make all the mappings
     :param a_json:
     :type a_json:
     """
@@ -534,35 +534,35 @@ def process_isight_indicator(a_json):
         # Without a MISP instance this does not make sense
         if this_misp_instance is False:
             raise ValueError("No MISP instance found.")
-            PySight_settings.logger.debug("No MISP Instance found: ", this_misp_instance )     
+            PySilo_settings.logger.debug("No MISP Instance found: ", this_misp_instance )     
             
         # Acquire a semaphore (decrease the counter in the semaphore).
         #threading used here
-        if PySight_settings.use_threading:
+        if PySilo_settings.use_threading:
             thread_limiter.acquire()
-        PySight_settings.logger.debug("max number %s current number: ", thread_limiter._initial_value, )
+        PySilo_settings.logger.debug("max number %s current number: ", thread_limiter._initial_value, )
 
         # Parse the FireEye iSight report
-        isight_report_instance = pySightReport(a_json)
+        isight_report_instance = PySiloReport(a_json)
 
         # If in DEBUG mode, write the iSight reports to a file.
-        if PySight_settings.debug_mode:
+        if PySilo_settings.debug_mode:
             # Create the "reports" subdirectory for storing iSight reports, if it doesn't exist already.
             if not os.path.exists("reports-2020"):
                 os.makedirs("reports-2020")
             f = open("reports-2020/" + isight_report_instance.reportId, 'a')
             # Write the iSight report into the "reports" subdirectory.
-            PySight_settings.logger.debug('creating report report ID %s in reports/', isight_report_instance.reportId)
+            PySilo_settings.logger.debug('creating report report ID %s in reports/', isight_report_instance.reportId)
             f.write(json.dumps(a_json, sort_keys=True, indent=4, separators=(',', ': ')))
             f.close()
 
         # Check whether we already have an event for this reportID.
-        PySight_settings.logger.debug('Checking for existing event with report ID %s', isight_report_instance.reportId)
+        PySilo_settings.logger.debug('Checking for existing event with report ID %s', isight_report_instance.reportId)
         event_id = misp_check_for_previous_event(this_misp_instance, isight_report_instance)
 
         if not event_id:
             # Create a new MISP event
-            PySight_settings.logger.debug('No event found for report ID %s -- will create a new one',
+            PySilo_settings.logger.debug('No event found for report ID %s -- will create a new one',
                                           isight_report_instance.reportId)
             print('***create new MISP event****')
             create_misp_event(this_misp_instance, isight_report_instance)
@@ -572,7 +572,7 @@ def process_isight_indicator(a_json):
                 os.makedirs("events-2020")
             f = open("events-2020/" + event, 'a')
             # Write the iSight report into the "reports" subdirectory.
-            PySight_settings.logger.debug('creating event report ID %s in events-2020/', event)
+            PySilo_settings.logger.debug('creating event report ID %s in events-2020/', event)
             f.write(json.dumps(a_json, sort_keys=True, indent=4, separators=(',', ': ')))
             f.close()                                                      
         else:
@@ -584,7 +584,7 @@ def process_isight_indicator(a_json):
         isight_report_instance = None
 
         # Release the semaphore (increase the counter in the semaphore).
-        if PySight_settings.use_threading:
+        if PySilo_settings.use_threading:
             thread_limiter.release()
 
     except AttributeError as e_AttributeError:
@@ -606,13 +606,13 @@ def misp_process_isight_indicators(a_result):
     """
     # Process each indicator in the JSON message
     for indicator in a_result['message']:
-        PySight_settings.logger.debug('Processing report %s', indicator['reportId'])
+        PySilo_settings.logger.debug('Processing report %s', indicator['reportId'])
 
-        if PySight_settings.use_threading:
+        if PySilo_settings.use_threading:
             # Use threads to process the indicators
             print('***threading****')
             # First, set the maximum number of threads
-            thread_limiter = threading.BoundedSemaphore(value=PySight_settings.number_threads)
+            thread_limiter = threading.BoundedSemaphore(value=PySilo_settings.number_threads)
             # Define a thread
             t = threading.Thread(target=process_isight_indicator, args=(indicator,))
             # Start the thread
@@ -642,53 +642,53 @@ def isight_load_data(a_url, a_query, a_header):
     
 
     # Set the proxy if specified
-    if PySight_settings.USE_ISIGHT_PROXY:
+    if PySilo_settings.USE_ISIGHT_PROXY:
         isight_proxies = {
-            'http': PySight_settings.proxy_address,
-            'https': PySight_settings.proxy_address
+            'http': PySilo_settings.proxy_address,
+            'https': PySilo_settings.proxy_address
         }
-        PySight_settings.logger.debug('Connecting to FireEye iSight via proxy %s', PySight_settings.proxy_address)
+        PySilo_settings.logger.debug('Connecting to FireEye iSight via proxy %s', PySilo_settings.proxy_address)
     else:
         isight_proxies = {}
-        PySight_settings.logger.debug('Connecting directly to FireEye iSight without a proxy')
+        PySilo_settings.logger.debug('Connecting directly to FireEye iSight without a proxy')
                                       
 
-    PySight_settings.logger.debug('FireEye iSight request URL: %s', url_to_load)
-    PySight_settings.logger.debug('FireEye iSight request header: %s', a_header)
+    PySilo_settings.logger.debug('FireEye iSight request URL: %s', url_to_load)
+    PySilo_settings.logger.debug('FireEye iSight request header: %s', a_header)
 
     try:
         r = requests.get(url_to_load, headers=a_header, proxies=isight_proxies, verify=False)
     except urllib.error.HTTPError as e:
-        PySight_settings.logger.debug('Urllib HTTP error code: %s', e.code)
-        PySight_settings.logger.debug('Urllib HTTP error message: %s', e.read())
+        PySilo_settings.logger.debug('Urllib HTTP error code: %s', e.code)
+        PySilo_settings.logger.debug('Urllib HTTP error message: %s', e.read())
     except requests.exceptions.ChunkedEncodingError as e:
-        PySight_settings.logger.debug('Error when connecting to the FireEye iSight API: %s', e)
+        PySilo_settings.logger.debug('Error when connecting to the FireEye iSight API: %s', e)
         return False
 
     if r.status_code == 204:
-        PySight_settings.logger.debug('No result found for search')
+        PySilo_settings.logger.debug('No result found for search')
         return False
     elif r.status_code == 404:
-        PySight_settings.logger.debug('%s: check the FireEye iSight API URL', r.reason)
-        PySight_settings.logger.debug('%s', r.text)
+        PySilo_settings.logger.debug('%s: check the FireEye iSight API URL', r.reason)
+        PySilo_settings.logger.debug('%s', r.text)
         return False
     elif r.status_code != 200:
-        PySight_settings.logger.debug('Request not successful: %s', r.text)
+        PySilo_settings.logger.debug('Request not successful: %s', r.text)
         return False
 
     return_data_cleaned = r.text.replace('\n', '')
 
     json_return_data_cleaned = json.loads(return_data_cleaned)
-    PySight_settings.logger.debug('Number of indicators returned: %s', len(json_return_data_cleaned['message']))
+    PySilo_settings.logger.debug('Number of indicators returned: %s', len(json_return_data_cleaned['message']))
 
     if not json_return_data_cleaned['success']:
-        PySight_settings.logger.debug('Error with the FireEye iSight API connection %s',
+        PySilo_settings.logger.debug('Error with the FireEye iSight API connection %s',
                                       json_return_data_cleaned['message']['description'])
-        PySight_settings.logger.debug(json_return_data_cleaned)
+        PySilo_settings.logger.debug(json_return_data_cleaned)
         return False
     else:
         # For debugging purposes, write the returned IOCs to a file
-        if PySight_settings.debug_mode:
+        if PySilo_settings.debug_mode:
             timestring = datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%d-%H%M%S')
             if not os.path.exists('debug'):
                 os.makedirs('debug')
@@ -755,7 +755,7 @@ def isight_prepare_data_request(a_url, a_query, a_pub_key, a_prv_key):
     print('######header:',header)
     print('#####result:',result)
     if not result:
-        PySight_settings.logger.debug('Something went wrong when retrieving indicators from the FireEye iSight API')
+        PySilo_settings.logger.debug('Something went wrong when retrieving indicators from the FireEye iSight API')
         return False
     else:
         return result
@@ -777,7 +777,7 @@ def isight_search_indicators(base_url, public_key, private_key, hours):
     return isight_prepare_data_request(base_url, search_query, public_key, private_key)
 
 
-# This function is called from test_pysight.py but otherwise not used.
+# This function is called from test_PySilo.py but otherwise not used.
 def data_search_report(url, public_key, private_key, a_reportid):
     print("text_search_wildcard Response:")
     # wild card text search
@@ -834,7 +834,7 @@ def data_advanced_search_filter_indicators(url, public_key, private_key):
 
 # This function is not used.
 def data_basic_search_ip(url, public_key, private_key, ip):
-    PySight_settings.logger.debug("basic_search Response")
+    PySilo_settings.logger.debug("basic_search Response")
     # Query for search
     basic_search_query = '/search/basic?ip=' + ip
     isight_prepare_data_request(url, basic_search_query, public_key, private_key)
@@ -892,8 +892,8 @@ def data_text_search_filter(url, public_key, private_key):
 
 if __name__ == '__main__':
     # If loglevel equals DEBUG, log the time the script ran.
-    PySight_settings.logger.debug('PySight2MISP started at %s', datetime.datetime.now(datetime.timezone.utc))
-    if PySight_settings.debug_mode:
+    PySilo_settings.logger.debug('PySilo2MISP started at %s', datetime.datetime.now(datetime.timezone.utc))
+    if PySilo_settings.debug_mode:
         # This is to log the time used to run the script
         from timeit import default_timer as timer
         start = timer()
@@ -901,20 +901,20 @@ if __name__ == '__main__':
 
     # Retrieve FireEye iSight indicators of the last x hours
     print('#######hello########')
-    result = isight_search_indicators(PySight_settings.isight_url, PySight_settings.isight_pub_key,PySight_settings.isight_priv_key, PySight_settings.isight_last_hours)
-  # PySight_settings.logger.debug("url:",PySight_settings.isight_url,"pubkey:", PySight_settings.isight_pub_key,"priv_key:",PySight_settings.isight_priv_key,"hrs",PySight_settings_last_hours)
+    result = isight_search_indicators(PySilo_settings.isight_url, PySilo_settings.SharedKey,PySilo_settings.APIKey, PySilo_settings.isight_last_hours)
+  # PySilo_settings.logger.debug("url:",PySilo_settings.isight_url,"shared key:", PPySilo_settings.SharedKey,"APIKey:",PySilo_settings.APIKey,"hrs",PySilo_settings_last_hours)
     print('####result####',result)
-    PySight_settings.logger.debug('####result####',result)
+    PySilo_settings.logger.debug('####result####',result)
     if result is False:
-        PySight_settings.logger.debug('No indicators available from FireEye iSight')
+        PySilo_settings.logger.debug('No indicators available from FireEye iSight')
     else:
         misp_process_isight_indicators(result)
 
-    PySight_settings.logger.debug('PySight2MISP finished at %s', datetime.datetime.now(datetime.timezone.utc))
+    PySilo_settings.logger.debug('PySilo2MISP finished at %s', datetime.datetime.now(datetime.timezone.utc))
     # If loglevel equals DEBUG, log the time the script ran.
-    if PySight_settings.debug_mode:
+    if PySilo_settings.debug_mode:
         end = timer()
-        PySight_settings.logger.debug('Time taken %s', end - start)
+        PySilo_settings.logger.debug('Time taken %s', end - start)
         Print('######Script Done #######')
         
 
