@@ -624,7 +624,8 @@ def isight_load_data(a_url, a_query, a_header):
     """
 
     # This is the URL for the iSight API query
-    url_to_load = a_url + a_query
+    #url_to_load = a_url + a_query
+    ur_to_load = a_query
     print('******url to load:',url_to_load)
     
 
@@ -644,7 +645,8 @@ def isight_load_data(a_url, a_query, a_header):
     PySilo_settings.logger.debug('FireEye iSight request header: %s', a_header)
 
     try:
-        r = requests.get(url_to_load, headers=a_header, proxies=isight_proxies, verify=False)
+        #r = requests.get(url_to_load, headers=a_header, proxies=isight_proxies, verify=False)
+        r= requests.get(url_to_load, verify=false)                                                           
     except urllib.error.HTTPError as e:
         PySilo_settings.logger.debug('Urllib HTTP error code: %s', e.code)
         PySilo_settings.logger.debug('Urllib HTTP error message: %s', e.read())
