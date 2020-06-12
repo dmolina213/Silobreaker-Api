@@ -548,9 +548,9 @@ def process_isight_indicator(a_json):
         # If in DEBUG mode, write the iSight reports to a file.
         if PySilo_settings.debug_mode:
             # Create the "reports" subdirectory for storing iSight reports, if it doesn't exist already.
-            if not os.path.exists("reports-2020"):
-                os.makedirs("reports-2020")
-            f = open("reports-2020/" + isight_report_instance.reportId, 'a')
+            if not os.path.exists("Silo-reports-2020"):
+                os.makedirs("Silo-reports-2020")
+            f = open("Silo-reports-2020/" + isight_report_instance.reportId, 'a')
             # Write the iSight report into the "reports" subdirectory.
             PySilo_settings.logger.debug('creating report report ID %s in reports/', isight_report_instance.reportId)
             f.write(json.dumps(a_json, sort_keys=True, indent=4, separators=(',', ': ')))
