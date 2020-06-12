@@ -471,11 +471,11 @@ def misp_check_for_previous_event(misp_instance, isight_alert):
         return False
 
     # Search based on report ID.
-    if isight_alert.reportId:
-        result = misp_instance.search(value=isight_alert.reportId, type_attribute='text', category='External analysis')
+    #if isight_alert.reportId:
+     #   result = misp_instance.search(value=isight_alert.reportId, type_attribute='text', category='External analysis')
         # If something was found in the MISP instance, then retrieve the event
-        if result:
-            event = check_misp_all_results(result)
+      #  if result:
+       #     event = check_misp_all_results(result)
 
     # If no event found, search based on report URL.
     if isight_alert.webLink and not event:
@@ -546,15 +546,15 @@ def process_isight_indicator(a_json):
         isight_report_instance = PySiloReport(a_json)
 
         # If in DEBUG mode, write the iSight reports to a file.
-        if PySilo_settings.debug_mode:
+       # if PySilo_settings.debug_mode:
             # Create the "reports" subdirectory for storing iSight reports, if it doesn't exist already.
-            if not os.path.exists("Silo-reports-2020"):
-                os.makedirs("Silo-reports-2020")
-            f = open("Silo-reports-2020/" + isight_report_instance.reportId, 'a')
+            #if not os.path.exists("Silo-reports-2020"):
+             #   os.makedirs("Silo-reports-2020")
+            #f = open("Silo-reports-2020/" + isight_report_instance.reportId, 'a')
             # Write the iSight report into the "reports" subdirectory.
-            PySilo_settings.logger.debug('creating report report ID %s in reports/', isight_report_instance.reportId)
-            f.write(json.dumps(a_json, sort_keys=True, indent=4, separators=(',', ': ')))
-            f.close()
+            #PySilo_settings.logger.debug('creating report report ID %s in reports/', isight_report_instance.reportId)
+            #f.write(json.dumps(a_json, sort_keys=True, indent=4, separators=(',', ': ')))
+            #f.close()
 
         # Check whether we already have an event for this reportID.
         PySilo_settings.logger.debug('Checking for existing event with report ID %s', isight_report_instance.reportId)
