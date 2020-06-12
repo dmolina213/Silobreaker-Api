@@ -28,7 +28,7 @@ import urllib.parse
 import urllib3
 
 # Read the config file.
-import PySight_settings
+import PySilo_settings
 
 # Import our own iSight report model.
 from model.pySightReport import pySightReport
