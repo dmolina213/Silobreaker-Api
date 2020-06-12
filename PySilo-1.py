@@ -3,10 +3,10 @@
 #PySilo3.py
 """
 Created on Sep 20, 2016
-Modified: May 12, 2020
-Modified : May20,2020 Incorporating Isighe Apiv3
-@author: deralexxx
-Script to pull iocs from iSight and push them to MISP
+Modified: June 11,2020
+Modified Modified for Silobreaker
+@author: dmolina213
+Script to pull iocs from Silobreaker to MISP
 Modified by: Douglas Molina
 Alexander Jaeger
 See CHANGELOG.md for history
