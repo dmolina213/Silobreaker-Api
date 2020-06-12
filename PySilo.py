@@ -771,7 +771,21 @@ def isight_search_indicators(base_url, public_key, private_key, hours):
     params = {
         'since': since
     }
-    search_query = '/view/indicators?' + urllib.parse.urlencode(params)
+    #search_query = '/view/indicators?' + urllib.parse.urlencode(params)
+                                                                    
+   #############################added for silobreaker############################
+    verb = "GET"
+    message = verb + " " + base_url
+
+    # Sign the URL
+
+    hmac_sha1 = hmac.new(sharedKey.encode(), message.encode(), digestmod=hashlib.sha1)
+    digest = base64.b64encode(hmac_sha1.digest())
+
+    # Fetch the data
+
+    final_url = base_url + "&apiKey=" + apiKey + "&digest=" + urllib.parse.quote(digest.decode())
+    req = urllib.request.Request(final_url)                                                           
 
     # Retrieve indicators and warning data since the specified date and time.
     return isight_prepare_data_request(base_url, search_query, public_key, private_key)
@@ -906,7 +920,7 @@ if __name__ == '__main__':
     print('####result####',result)
     PySilo_settings.logger.debug('####result####',result)
     if result is False:
-        PySilo_settings.logger.debug('No indicators available from FireEye iSight')
+        PySilo_settings.logger.debug('No informatopm available from SiloBreaker')
     else:
         misp_process_isight_indicators(result)
 
