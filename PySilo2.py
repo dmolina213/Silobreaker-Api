@@ -775,7 +775,8 @@ def isight_search_indicators(base_url, public_key, private_key, hours):
     req = urllib.request.Request(final_url)                                                           
 
     # Retrieve indicators and warning data since the specified date and time.
-    return isight_prepare_data_request(base_url, search_query, public_key, private_key)
+    PySilo_settings.logger.debug('final_url','req', req)                                                            
+    return isight_prepare_data_request(final_url, req, public_key, private_key)
 
 
 # This function is called from test_PySilo.py but otherwise not used.
