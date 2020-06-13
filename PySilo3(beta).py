@@ -81,6 +81,85 @@ def misp_process_isight_indicators(a_result):
             # No threading
             print('***no threading***')
             process_isight_indicator(indicator)
+            
+def process_isight_indicator(a_json):
+    """
+    Create a PySiloAlert instance of the json and make all the mappings
+    :param a_json:
+    :type a_json:
+    """
+
+    try:
+        # Get a MISP instance per thread
+        this_misp_instance = get_misp_instance()
+        print('********',this_misp_instance,'*******')
+
+        # Without a MISP instance this does not make sense
+        if this_misp_instance is False:
+            raise ValueError("No MISP instance found.")
+            PySilo_settings.logger.debug("No MISP Instance found: ", this_misp_instance )     
+            
+        # Acquire a semaphore (decrease the counter in the semaphore).
+        #threading used here
+        if PySilo_settings.use_threading:
+            thread_limiter.acquire()
+        PySilo_settings.logger.debug("max number %s current number: ", thread_limiter._initial_value, )
+
+        # Parse the FireEye iSight report
+        #isight_report_instance = PySiloReport(a_json)
+
+        # If in DEBUG mode, write the iSight reports to a file.
+       # if PySilo_settings.debug_mode:
+            # Create the "reports" subdirectory for storing iSight reports, if it doesn't exist already.
+            #if not os.path.exists("Silo-reports-2020"):
+             #   os.makedirs("Silo-reports-2020")
+            #f = open("Silo-reports-2020/" + isight_report_instance.reportId, 'a')
+            # Write the iSight report into the "reports" subdirectory.
+            #PySilo_settings.logger.debug('creating report report ID %s in reports/', isight_report_instance.reportId)
+            #f.write(json.dumps(a_json, sort_keys=True, indent=4, separators=(',', ': ')))
+            #f.close()
+
+        # Check whether we already have an event for this reportID.
+        PySilo_settings.logger.debug('Checking for existing event with report ID %s', isight_report_instance.reportId)
+        event_id = misp_check_for_previous_event(this_misp_instance, isight_report_instance)
+
+        if not event_id:
+            # Create a new MISP event
+            PySilo_settings.logger.debug('No event found for report ID %s -- will create a new one',
+                                          isight_report_instance.reportId)
+            print('***create new MISP event****')
+            create_misp_event(this_misp_instance, isight_report_instance)
+            ###added 5-12-2020 by dmolina
+            # Create the "events" subdirectory for storing iSight reports, if it doesn't exist already.
+            if not os.path.exists("events-2020"):
+                os.makedirs("events-2020")
+            f = open("events-2020/" + event, 'a')
+            # Write the iSight report into the "reports" subdirectory.
+            PySilo_settings.logger.debug('creating event report ID %s in events-2020/', event)
+            f.write(json.dumps(a_json, sort_keys=True, indent=4, separators=(',', ': ')))
+            f.close()                                                      
+        else:
+            # Add the data to the found event
+            event = this_misp_instance.get_event(event_id, pythonify=True)
+            update_misp_event(this_misp_instance, event, isight_report_instance)
+
+        # Reset the iSight report instance when done.
+        isight_report_instance = None
+
+        # Release the semaphore (increase the counter in the semaphore).
+        if PySilo_settings.use_threading:
+            thread_limiter.release()
+
+    except AttributeError as e_AttributeError:
+        sys, traceback = error_handling(e_AttributeError, a_string="Attribute Error")
+        return False
+    except TypeError as e_TypeError:
+        sys, traceback = error_handling(e_TypeError, a_string="Type Error:")
+        return False
+    except Exception as e_Exception:
+        sys, traceback = error_handling(e_Exception, a_string="General Error:")
+        return False
+
 ################################start################################
 # Command line arguments 
 
