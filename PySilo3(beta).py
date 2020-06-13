@@ -125,10 +125,9 @@ def process_isight_indicator(a_json):
 
         if not event_id:
             # Create a new MISP event
-            PySilo_settings.logger.debug('No event found for report ID %s -- will create a new one',
-                                          isight_report_instance.reportId)
+            PySilo_settings.logger.debug('No event found for report ID %s -- will create a new one')
             print('***create new MISP event****')
-            create_misp_event(this_misp_instance, isight_report_instance)
+            create_misp_event(this_misp_instance)
             ###added 5-12-2020 by dmolina
             # Create the "events" subdirectory for storing iSight reports, if it doesn't exist already.
             if not os.path.exists("events-2020"):
@@ -160,16 +159,16 @@ def process_isight_indicator(a_json):
         sys, traceback = error_handling(e_Exception, a_string="General Error:")
         return False
 # Create a new MISP event.
-def create_misp_event(misp_instance, isight_report_instance):
+def create_misp_event(misp_instance):
     # No MISP event for this iSight report ID exists yet.
     # Alas, create a new MISP event.
 
     # Convert the publication date of the iSight report into a datetime object.
-    if isight_report_instance.publishDate:
-        date = datetime.datetime.fromtimestamp(isight_report_instance.publishDate)
-    else:
+    #if isight_report_instance.publishDate:
+       # date = datetime.datetime.fromtimestamp(isight_report_instance.publishDate)
+    #else:
         # If iSight doesn't provide a date, use today's date.
-        date = datetime.datetime.now(datetime.timezone.utc)
+        #date = datetime.datetime.now(datetime.timezone.utc)
 
     # Create a MISP event from the FireEye iSight report with the following parameters.
     print('****create new event*****')
