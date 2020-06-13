@@ -299,7 +299,7 @@ def create_misp_event(misp_instance):
 
    
     # If the alert contains email indicators, create an email object.
-    if isight_alert.emailIdentifier:
+    if isight_alert.Description:
         # If emailLanguage is provided, add it to the default comment.
         if isight_alert.emailLanguage:
             add_comment = 'Email language: ' + isight_alert.emailLanguage
@@ -313,8 +313,8 @@ def create_misp_event(misp_instance):
         email_object = MISPObject('email')
         email_object.comment = email_comment
         # Add attributes to the object.
-        if isight_alert.senderAddress:
-            email_object.add_attribute('from', value=isight_alert.senderAddress, to_ids=email_ids)
+        if isight_alert.Description:
+            email_object.add_attribute('from', value=isight_alert.Description, to_ids=email_ids)
         if isight_alert.senderName:
             email_object.add_attribute('from-display-name', value=isight_alert.senderName, to_ids=False)
         if isight_alert.sourceIP:
