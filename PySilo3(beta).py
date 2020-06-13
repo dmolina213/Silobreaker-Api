@@ -147,7 +147,7 @@ def process_isight_indicator(a_json):
         PySilo_settings.logger.debug("max number %s current number: ", thread_limiter._initial_value, )
 
         # Parse the FireEye iSight report
-        #isight_report_instance = PySiloReport(a_json)
+        isight_report_instance = PySiloReport(a_json)
 
         # If in DEBUG mode, write the iSight reports to a file.
        # if PySilo_settings.debug_mode:
