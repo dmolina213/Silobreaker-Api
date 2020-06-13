@@ -39,10 +39,10 @@ class pySightReport (object):
         self.alert = a_alert_json
 
         # General information
-        self.reportId = None
-        self.title = None  # Cutwail Botnet Distributes Recruitment Mass Mailings
+        self.Id = None
+        self.Description = None  # Cutwail Botnet Distributes Recruitment Mass Mailings
         self.publishDate = None  # 1469544180
-        self.ThreatScape = None  # Cyber Espionage
+        self.Type = None  # Cyber Espionage
         self.riskRating = None  # High
         self.audience = None  # Operational
         self.intelligenceType = None  # threat / malware / vulnerability / overview
@@ -51,7 +51,7 @@ class pySightReport (object):
 
         # Email-related indicators
         self.emailIdentifier = None  # Attacker
-        self.senderAddress = None  # lissddzz@gmail.com
+        self.Description = None  # lissddzz@gmail.com
         self.senderName = None  # lissddzz
         self.sourceDomain = None  # samyongonc.com
         self.sourceIP = None  # 184.105.137.110
@@ -111,10 +111,10 @@ class pySightReport (object):
         if not p_alert_json:
             raise ValueError('No Json given')
 
-        if "reportId" in p_alert_json and p_alert_json['reportId'] is not None:
-            self.reportId = str(p_alert_json['reportId'])
-        if 'title' in p_alert_json and p_alert_json['title'] is not None:
-            self.title = str(p_alert_json['title'])
+        if "Id" in p_alert_json and p_alert_json['Id'] is not None:
+            self.Id = str(p_alert_json['Id'])
+        if 'Description' in p_alert_json and p_alert_json['Description'] is not None:
+            self.Description = str(p_alert_json['Description'])
         if 'publishDate' in p_alert_json and p_alert_json['publishDate'] is not None:
             if isinstance(p_alert_json['publishDate'],int):
                 self.publishDate = p_alert_json['publishDate']
@@ -126,8 +126,8 @@ class pySightReport (object):
                 datetime_object = datetime.strptime(p_alert_json['publishDate'], date_format)
                 timestamp = time.mktime(datetime_object.timetuple())
                 self.publishDate = int(timestamp)
-        if 'ThreatScape' in p_alert_json and p_alert_json['ThreatScape'] is not None:
-            self.ThreatScape = str(p_alert_json['ThreatScape'])
+        if 'Type' in p_alert_json and p_alert_json['Type'] is not None:
+            self.Type = str(p_alert_json['Type'])
         if 'audience' in p_alert_json and p_alert_json['audience'] is not None:
             self.audience = str(p_alert_json['audience'])
         if 'intelligenceType' in p_alert_json and p_alert_json['intelligenceType'] is not None:
@@ -141,8 +141,8 @@ class pySightReport (object):
             #self.alert_ma_id = (self.alert_url.split("="))[1]
         if 'emailIdentifier' in p_alert_json and p_alert_json['emailIdentifier'] is not None:
             self.emailIdentifier = str(p_alert_json['emailIdentifier'])
-        if 'senderAddress' in p_alert_json and p_alert_json['senderAddress'] is not None:
-            self.senderAddress = str(p_alert_json['senderAddress'])
+        if 'Description' in p_alert_json and p_alert_json['Description'] is not None:
+            self.Description = str(p_alert_json['Description'])
         if 'senderName' in p_alert_json and p_alert_json['senderName'] is not None:
             self.senderName = str(p_alert_json['senderName'])
         if 'sourceDomain' in p_alert_json and p_alert_json['sourceDomain'] is not None:
