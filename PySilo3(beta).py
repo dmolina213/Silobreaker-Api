@@ -181,7 +181,7 @@ def process_isight_indicator(a_json):
         else:
             # Add the data to the found event
             event = this_misp_instance.get_event(event_id, pythonify=True)
-            update_misp_event(this_misp_instance, event, isight_report_instance)
+            update_misp_event(this_misp_instance, event)
 
         # Reset the iSight report instance when done.
         isight_report_instance = None
