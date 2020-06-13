@@ -82,7 +82,7 @@ def misp_process_isight_indicators(a_result):
             print('***no threading***')
             process_isight_indicator(indicator)
  
-def misp_check_for_previous_event(misp_instance):
+def misp_check_for_previous_event(misp_instance, isight_alert):
     """
     Default: No event exists for this iSight report ID.
     :param misp_instance:
@@ -99,28 +99,25 @@ def misp_check_for_previous_event(misp_instance):
     if misp_instance is None:
         PySilo_settings.logger.debug('No MISP instance provided')
         return False
-    # Search based on events folder
-   #"events-2020/" + event
-    if not os.path.exists("events-2020"+event):
-        return false
-    # Search based on report ID.
-    #if isight_alert.reportId:
-     #   result = misp_instance.search(value=isight_alert.reportId, type_attribute='text', category='External analysis')
+
+     Search based on report ID.
+    if isight_alert.Id:
+        result = misp_instance.search(value=isight_alert.tId, type_attribute='text', category='External analysis')
         # If something was found in the MISP instance, then retrieve the event
-      #  if result:
-       #     event = check_misp_all_results(result)
+       if result:
+            event = check_misp_all_results(result)
 
     # If no event found, search based on report URL.
-    # if isight_alert.webLink and not event:
-      #  result = misp_instance.search(value=isight_alert.webLink, type_attribute='link', category='External analysis')
+    if isight_alert.webLink and not event:
+        result = misp_instance.search(value=isight_alert.webLink, type_attribute='link', category='External analysis')
         # If something was found in the MISP instance, then retrieve the event
-      #  if result:
-          #  event = check_misp_all_results(result)
+        if result:
+            event = check_misp_all_results(result)
 
-   # if not result:
-      #  PySilo_settings.logger.debug('Found no existing event for iSight report ID %s', isight_alert.reportId)
+    if not result:
+        PySilo_settings.logger.debug('Found no existing event for iSight report ID %s', isight_alert.reportId)
 
-return false
+    return event
 
 
 def process_isight_indicator(a_json):
