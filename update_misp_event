@@ -1,4 +1,4 @@
-def update_misp_event(misp_instance, event):
+def update_misp_event(misp_instance, event,isight_alert):
     # Update attributes based on the iSight report.
     #
     # Ideas of Alex not implemented:
