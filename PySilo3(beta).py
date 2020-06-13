@@ -119,6 +119,29 @@ def misp_check_for_previous_event(misp_instance, isight_alert):
 
     return event
 
+def check_misp_all_results(a_result):
+    """
+    :param a_result:
+    :type a_result:
+    :return: previous event from MISP
+    :rtype:
+    """
+    # PySilo_settings.logger.debug('Checking %s if it contains previous events', a_result)
+    if 'message' in a_result:
+        if a_result['message'] == 'No matches.':
+            PySilo_settings.logger.debug('No existing MISP event found')
+            # has really no event
+            return False
+    elif 'Event' in a_result[0]:
+        previous_event = a_result[0]['Event']['id']
+        print('#####previous event#######:',previous_event,'e[][]',event['Event']['id'])                                                             
+        PySilo_settings.logger.debug('Found an existing MISP event with ID %s', previous_event)
+        return previous_event
+    else:
+        for e in a_result['response']:
+            previous_event = e['Event']['id']
+            PySilo_settings.logger.debug('Found an existing MISP event with ID %s', previous_event)
+            return previous_event
 
 def process_isight_indicator(a_json):
     """
