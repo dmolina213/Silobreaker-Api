@@ -1,4 +1,4 @@
-def misp_check_for_previous_event(misp_instance, isight_alert):
+def misp_check_for_previous_event(misp_instance):
     """
     Default: No event exists for this iSight report ID.
     :param misp_instance:
@@ -15,7 +15,10 @@ def misp_check_for_previous_event(misp_instance, isight_alert):
     if misp_instance is None:
         PySilo_settings.logger.debug('No MISP instance provided')
         return False
-
+    # Search based on events folder
+   #"events-2020/" + event
+    if not os.path.exists("events-2020"+event):
+        return false
     # Search based on report ID.
     #if isight_alert.reportId:
      #   result = misp_instance.search(value=isight_alert.reportId, type_attribute='text', category='External analysis')
