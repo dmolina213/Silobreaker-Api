@@ -1,4 +1,4 @@
-def update_misp_event(misp_instance, event, isight_alert):
+def update_misp_event(misp_instance, event):
     # Update attributes based on the iSight report.
     #
     # Ideas of Alex not implemented:
@@ -15,28 +15,7 @@ def update_misp_event(misp_instance, event, isight_alert):
         PySilo_settings.logger.debug('Parameter misp_instance is not a PyMISP object')
         return False
 
-    # Determine whether the to_ids flag shall be set.
-    if isight_alert.emailIdentifier == 'Attacker' or isight_alert.emailIdentifier == 'Compromised':
-        email_ids = True
-    else:
-        email_ids = False
-    if isight_alert.fileIdentifier == 'Attacker' or isight_alert.fileIdentifier == 'Compromised':
-        file_ids = True
-    elif isight_alert.intelligenceType == 'malware':
-        file_ids = True
-    else:
-        file_ids = False
-    if isight_alert.networkIdentifier == 'Attacker' or isight_alert.networkIdentifier == 'Compromised':
-        network_ids = True
-    else:
-        network_ids = False
-
-    # Use malwareFamily as the default comment.
-    if isight_alert.malwareFamily:
-        default_comment = isight_alert.malwareFamily
-    else:
-        default_comment = ''
-
+   
     # If the alert contains email indicators, create an email object.
     if isight_alert.emailIdentifier:
         # If emailLanguage is provided, add it to the default comment.
