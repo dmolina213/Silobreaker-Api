@@ -170,18 +170,18 @@ def process_isight_indicator(a_json):
         isight_report_instance = PySiloReport(a_json)
 
         # If in DEBUG mode, write the iSight reports to a file.
-       # if PySilo_settings.debug_mode:
+       if PySilo_settings.debug_mode:
             # Create the "reports" subdirectory for storing iSight reports, if it doesn't exist already.
-            #if not os.path.exists("Silo-reports-2020"):
-             #   os.makedirs("Silo-reports-2020")
-            #f = open("Silo-reports-2020/" + isight_report_instance.reportId, 'a')
-            # Write the iSight report into the "reports" subdirectory.
-            #PySilo_settings.logger.debug('creating report report ID %s in reports/', isight_report_instance.reportId)
-            #f.write(json.dumps(a_json, sort_keys=True, indent=4, separators=(',', ': ')))
-            #f.close()
+            if not os.path.exists("Silo-reports-2020"):
+                os.makedirs("Silo-reports-2020")
+            f = open("Silo-reports-2020/" + isight_report_instance.Id, 'a')
+             Write the iSight report into the "reports" subdirectory.
+            PySilo_settings.logger.debug('creating report report ID %s in reports/', isight_report_instance.Id)
+            f.write(json.dumps(a_json, sort_keys=True, indent=4, separators=(',', ': ')))
+            f.close()
 
         # Check whether we already have an event for this reportID.
-        PySilo_settings.logger.debug('Checking for existing event with report ID %s', isight_report_instance.reportId)
+        PySilo_settings.logger.debug('Checking for existing event with report ID %s', isight_report_instance.Id)
         event_id = misp_check_for_previous_event(this_misp_instance, isight_report_instance)
 
         if not event_id:
