@@ -219,7 +219,33 @@ def process_isight_indicator(a_json):
     except Exception as e_Exception:
         sys, traceback = error_handling(e_Exception, a_string="General Error:")
         return False
-# Create a new MISP event.
+#get misp instance
+def get_misp_instance():
+    print('*******get misp instance()********')
+
+    """
+    :return: MISP Instance
+    :rtype: PyMISP
+    """
+    # Proxy settings are taken from the config file and converted to a dict.
+    if PySilo_settings.USE_MISP_PROXY:
+        misp_proxies = {
+            'http': str(PySilo_settings.proxy_address),
+            'https': str(PySilo_settings.proxy_address)
+        }
+    else:
+        misp_proxies = {}
+
+    try:
+        # URL of the MISP instance, API key and SSL certificate validation are taken from the config file.
+        return ExpandedPyMISP(PySilo_settings.misp_url, PySilo_settings.misp_key, PySilo_settings.misp_verifycert,
+                              proxies=misp_proxies)
+        #return PyMISP(PySilo_settings.misp_url, PySilo_settings.misp_key, PySilo_settings.misp_verifycert,
+        #              proxies=misp_proxies)
+    except Exception:
+        PySilo_settings.logger.debug('Unexpected error in MISP init: %s', sys.exc_info())
+        return False
+#Create a new MISP event.
 def create_misp_event(misp_instance):
     # No MISP event for this iSight report ID exists yet.
     # Alas, create a new MISP event.
