@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 
-class pySiiloReport (object):
+class PySiloReport (object):
     def __init__(self, a_alert_json):
         """
         :param a_alert_json:
