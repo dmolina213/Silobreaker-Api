@@ -2,7 +2,7 @@
 
 # -*- coding: utf-8 -*-
 
-#PySilo3beta.py8
+#PySilo3beta.py
 
 import datetime
 
@@ -76,7 +76,7 @@ def error_handling(e, a_string):
 
 """
 
-if hasattr(e, ‘Items’):
+if hasattr(e, “Items”):
 
 PySilo_settings.logger.debug('%s %s', a_string, e.message)
 
@@ -138,7 +138,7 @@ def misp_process_isight_indicators(a_result):
 
 # Process each indicator in the JSON message
 
-for indicator in a_result[‘Items’]:
+for indicator in a_result[“Items”]:
 
 Print("#####indicator#####",indicator)
 
@@ -904,9 +904,9 @@ def check_misp_all_results(a_result):
 
 # PySilo_settings.logger.debug('Checking %s if it contains previous events', a_result)
 
-if ‘Items’ in a_result:
+if “Items” in a_result:
 
-if a_result[‘Items’] == 'No matches.':
+if a_result[“Items”] == 'No matches.':
 
 PySilo_settings.logger.debug('No existing MISP event found')
 
