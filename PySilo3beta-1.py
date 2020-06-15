@@ -142,7 +142,7 @@ for indicator in a_result['Items']:
 
 Print("#####indicator#####",indicator)
 
-PySilo_settings.logger.debug('Processing report %s', indicator['reportId'])
+PySilo_settings.logger.debug('Processing report %s', indicator['Id'])
 
 
 
@@ -242,7 +242,7 @@ event = check_misp_all_results(result)
 
 if not result:
 
-PySilo_settings.logger.debug('Found no existing event for iSight report ID %s', isight_alert.reportId)
+PySilo_settings.logger.debug('Found no existing event for iSight report ID %s', isight_alert.Id)
 
 
 
@@ -752,7 +752,7 @@ misp_instance.update_event(event)
 
 print('#####publishing event:', event['id'])
 
-PySilo_settings.logger.debug('#####publishing event: %s', event['id'],isight_alert.reportId) 
+PySilo_settings.logger.debug('#####publishing event: %s', event['id'],isight_alert.Id) 
 
 event.attribute.add_tag('ISIGHT APIv3') 
 
@@ -832,7 +832,7 @@ print("#######Push event to MISP server####",my_event)
 
 
 
-PySilo_settings.logger.debug('Created MISP event %s for iSight report %s', event, isight_report_instance.reportId)
+PySilo_settings.logger.debug('Created MISP event %s for iSight report %s', event, isight_report_instance.Id)
 
 
 
@@ -1010,7 +1010,7 @@ f.close()
 
 
 
-# Check whether we already have an event for this reportID.
+# Check whether we already have an event for this Id.
 
 PySilo_settings.logger.debug('Checking for existing event with report ID %s', isight_report_instance.Id)
 
@@ -1210,7 +1210,7 @@ print("#######Push event to MISP server####",my_event)
 
 
 
-PySilo_settings.logger.debug('Created MISP event %s for iSight report %s', event, isight_report_instance.reportId)
+PySilo_settings.logger.debug('Created MISP event %s for iSight report %s', event, isight_report_instance.Id)
 
 
 
@@ -1224,7 +1224,7 @@ misp_instance.tag(my_event, 'CTI feed: SILOBREAKER')
 
 misp_instance.tag(my_event, 'tlp:amber')
 
-#misp_instance.tag(my_event, 'report id', isight_report_instance.reportId)
+#misp_instance.tag(my_event, 'report id', isight_report_instance.Id)
 
 
 
