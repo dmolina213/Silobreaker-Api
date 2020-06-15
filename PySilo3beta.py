@@ -570,7 +570,7 @@ def get_misp_instance():
         PySilo_settings.logger.debug('Unexpected error in MISP init: %s', sys.exc_info())
         return False
 #Create a new MISP event.
-def create_misp_event(misp_instance):
+def create_misp_event(misp_instance,isight_report_instance):
     # No MISP event for this iSight report ID exists yet.
     # Alas, create a new MISP event.
 
