@@ -17,7 +17,8 @@ import urllib3
 import PySilo_settings
 
 # Import our own iSight report model.
-from model.PySiloReport import PySiloReport
+#from model.PySiloReport import PySiloReport
+from .models import PySiloReport
 
 # Suppress insecure HTTPS request warnings.
 urllib3.disable_warnings()
