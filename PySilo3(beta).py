@@ -371,7 +371,7 @@ def update_misp_event(misp_instance, event, isight_alert):
     # Lastly, publish the event without sending an alert email.
     # This command expects the event ID instead of a MISPevent as argument.
     print('#####publishing event:', event['id'])
-    PySilo_settings.logger.debug('#####publishing event: %s', event['id],isight_alert.reportId) 
+    PySilo_settings.logger.debug('#####publishing event: %s', event['id'],isight_alert.reportId) 
     event.attribute.add_tag('ISIGHT APIv3')                                                
     #misp_instance.publish(event['id'], alert=False)
 
