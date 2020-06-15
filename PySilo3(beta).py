@@ -108,11 +108,11 @@ def misp_check_for_previous_event(misp_instance, isight_alert):
             event = check_misp_all_results(result)
 
     # If no event found, search based on report URL.
-    if isight_alert.webLink and not event:
-        result = misp_instance.search(value=isight_alert.webLink, type_attribute='link', category='External analysis')
+    #if isight_alert.webLink and not event:
+     #   result = misp_instance.search(value=isight_alert.webLink, type_attribute='link', category='External analysis')
         # If something was found in the MISP instance, then retrieve the event
-        if result:
-            event = check_misp_all_results(result)
+      #  if result:
+       #     event = check_misp_all_results(result)
 
     if not result:
         PySilo_settings.logger.debug('Found no existing event for iSight report ID %s', isight_alert.reportId)
