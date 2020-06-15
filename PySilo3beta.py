@@ -638,7 +638,7 @@ args = parser.parse_args()
 
 url = parse.quote(args.URL, safe=":/?&=")
 
-with open("../secrets.json") as f: # The secrets file has the same format as the node example.
+with open("secrets.json") as f: # The secrets file has the same format as the node example.
     secrets = json.load(f)
 
 sharedKey = secrets["SharedKey"]
