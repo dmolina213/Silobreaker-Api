@@ -6,7 +6,7 @@ import logging
 config = configparser.RawConfigParser()
 
 # Read the config file and set config values
-config.read('config1.cfg')
+siloconfig1.read('config1.cfg')
 
 LOG_LEVEL = config.get('general', 'log_level')
 use_threading = config.getboolean('general', 'use_threading')
