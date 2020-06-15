@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#PySilo3beta.py
 import datetime
 import email.utils
 import hashlib
