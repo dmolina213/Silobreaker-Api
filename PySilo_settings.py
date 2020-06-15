@@ -70,7 +70,7 @@ else:
     logging.getLogger('urllib3').setLevel(logging.WARNING)
 
 # Create a file handler and log there, too, in addition to the console.
-log_file = logging.FileHandler('output.log')
+log_file = logging.FileHandler('silooutput.log')
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 log_file.setFormatter(formatter)
 logger.addHandler(log_file)
