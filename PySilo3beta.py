@@ -611,20 +611,20 @@ def create_misp_event(misp_instance):
     
                                                                      
 
-    Use some iSight ThreatScapes for event tagging. Reports can have multiple ThreatScapes.
+   # Use some iSight ThreatScapes for event tagging. Reports can have multiple ThreatScapes.
     if 'Cyber Espionage' in isight_report_instance.ThreatScape:
         # VERIS distinguishes between external, internal or partner actors. This difference is not yet implemented in
         # MISP. External would be most likely.
-        #misp_instance.tag(my_event, 'veris:actor:external:motive="Espionage"')
-        #misp_instance.tag(my_event, 'veris:actor:motive="Espionage"')
+        misp_instance.tag(my_event, 'veris:actor:external:motive="Espionage"')
+        misp_instance.tag(my_event, 'veris:actor:motive="Espionage"')
     if 'Hacktivism' in isight_report_instance.ThreatScape:
-        #misp_instance.tag(my_event, 'veris:actor:external:variety="Activist"')
+        misp_instance.tag(my_event, 'veris:actor:external:variety="Activist"')
     if 'Critical Infrastructure' in isight_report_instance.ThreatScape:
-       # misp_instance.tag(my_event, 'basf:technology="OT"')
+        misp_instance.tag(my_event, 'basf:technology="OT"')
     if 'Cyber Physical' in isight_report_instance.ThreatScape:
-        #misp_instance.tag(my_event, 'basf:technology="OT"')
+        misp_instance.tag(my_event, 'basf:technology="OT"')
     if 'Cyber Crime' in isight_report_instance.ThreatScape:
-        #misp_instance.tag(my_event, 'veris:actor:external:variety="Organized crime"')
+        misp_instance.tag(my_event, 'veris:actor:external:variety="Organized crime"')
      
  
 ################################start################################
