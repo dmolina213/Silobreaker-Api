@@ -495,7 +495,7 @@ def process_isight_indicator(a_json):
             if not os.path.exists("Silo-reports-2020"):
                 os.makedirs("Silo-reports-2020")
             f = open("Silo-reports-2020/" + isight_report_instance.Id, 'a')
-             Write the iSight report into the "reports" subdirectory.
+            # Write the iSight report into the "reports" subdirectory.
             PySilo_settings.logger.debug('creating report report ID %s in reports/', isight_report_instance.Id)
             f.write(json.dumps(a_json, sort_keys=True, indent=4, separators=(',', ': ')))
             f.close()
