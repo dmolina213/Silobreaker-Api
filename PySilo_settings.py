@@ -18,9 +18,9 @@ else:
     number_threads = 1
 
 isight_url = config.get('isight', 'isight_url')
-isight_priv_key = config.get('isight', 'isight_priv_key')
-isight_pub_key = config.get('isight', 'isight_pub_key')
-isight_last_hours = config.getint('isight', 'last_hours')
+#isight_priv_key = config.get('isight', 'isight_priv_key')
+#isight_pub_key = config.get('isight', 'isight_pub_key')
+#isight_last_hours = config.getint('isight', 'last_hours')
 
 misp_url = config.get('MISP', 'misp_url')
 misp_key = config.get('MISP', 'misp_key')
