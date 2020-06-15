@@ -507,7 +507,7 @@ def process_isight_indicator(a_json):
             # Create a new MISP event
             PySilo_settings.logger.debug('No event found for report ID %s -- will create a new one')
             print('***create new MISP event****')
-            create_misp_event(this_misp_instance)
+            create_misp_event(this_misp_instance, isight_report_instance)
             ###added 5-12-2020 by dmolina
             # Create the "events" subdirectory for storing iSight reports, if it doesn't exist already.
             if not os.path.exists("events-2020"):
