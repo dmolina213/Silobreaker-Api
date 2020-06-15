@@ -1194,7 +1194,7 @@ event.threat_level_id = 4 # Unknown
 
 event.analysis = 2 # Completed
 
-event.info = "iSIGHT: " + isight_report_instance.title
+event.info = "iSIGHT: " + isight_report_instance.Description
 
 event.date = date
 
