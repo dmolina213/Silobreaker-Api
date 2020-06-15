@@ -104,7 +104,8 @@ def misp_check_for_previous_event(misp_instance, isight_alert):
     if isight_alert.Id:
         result = misp_instance.search(value=isight_alert.Id, type_attribute='text', category='External analysis')
         # If something was found in the MISP instance, then retrieve the event
-       if result:
+       
+    if result:
             event = check_misp_all_results(result)
 
     # If no event found, search based on report URL.
