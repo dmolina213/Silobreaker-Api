@@ -1,14 +1,10 @@
 #!/usr/bin/env python
 
 # pySightReport - Python class for parsing iSightReport json alerts
-#
+#dmolina213
 # Alexander Jaeger (deralexxx)
 #
-# The MIT License (MIT) see https://github.com/deralexxx/FireMISP/blob/master/LICENSE
-#
-# For documentation of iSight indicator fields, see
-# https://docs.fireeye.com/iSight/index.html#/field_definitions and
-# https://docs.fireeye.com/iSight/index.html#/indicators
+
 #
 
 from datetime import datetime
@@ -42,10 +38,10 @@ class PySiloReport (object):
         self.Id = None
         self.Description = None  # Cutwail Botnet Distributes Recruitment Mass Mailings
         self.publishDate = None  # 1469544180
-        self.Type = None  # Cyber Espionage
+        self.Type = None  # email
         self.riskRating = None  # High
         self.audience = None  # Operational
-        self.intelligenceType = None  # threat / malware / vulnerability / overview
+        self.IntelligenceType = None  # threat / malware / vulnerability / overview
         self.reportLink = None  # https:#api.isightpartners.com/report/16-00011458
         self.webLink = None  # https:#mysight.isightpartners.com/report/full/16-00011458
         self.EntityReference = None
