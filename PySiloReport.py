@@ -48,6 +48,7 @@ class PySiloReport (object):
         self.intelligenceType = None  # threat / malware / vulnerability / overview
         self.reportLink = None  # https:#api.isightpartners.com/report/16-00011458
         self.webLink = None  # https:#mysight.isightpartners.com/report/full/16-00011458
+        self.EntityReference = None
 
         # Email-related indicators
         self.emailIdentifier = None  # Attacker
@@ -128,6 +129,8 @@ class PySiloReport (object):
                 self.publishDate = int(timestamp)
         if 'Type' in p_alert_json and p_alert_json['Type'] is not None:
             self.Type = str(p_alert_json['Type'])
+        if 'EntityReference' in p_alert_json and p_alert_json['Type'] is not None:
+            self.EntityReference = str(p_alert_json['EntityReference'])
         if 'audience' in p_alert_json and p_alert_json['audience'] is not None:
             self.audience = str(p_alert_json['audience'])
         if 'intelligenceType' in p_alert_json and p_alert_json['intelligenceType'] is not None:
