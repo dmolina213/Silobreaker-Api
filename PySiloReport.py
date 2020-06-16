@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-
+#
 # pySightReport - Python class for parsing iSightReport json alerts
 #dmolina213
 # Alexander Jaeger (deralexxx)
 #
-
+#
 #
 
 from datetime import datetime
