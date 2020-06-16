@@ -282,7 +282,11 @@ PySilo_settings.logger.debug('Parameter misp_instance is not a PyMISP object')
 
 return False
 
-
+#silobreaker stuff added by dmolna213
+if isight_alert.Type='Email':
+  default_comment=isight_alert.EntityReference
+else: 
+  default_comment = ''
 
 # Determine whether the to_ids flag shall be set.
 
@@ -357,14 +361,14 @@ email_object = MISPObject('email')
 email_object.comment = email_comment
 
 # Add attributes to the object.
+#added for silobreaker
+if isight_alert.Type="Email": 
 
-if isight_alert.senderAddress:
+  email_object.add_attribute('from', value=isight_alert.Id, to_ids=email_ids)
 
-email_object.add_attribute('from', value=isight_alert.senderAddress, to_ids=email_ids)
-
-if isight_alert.senderName:
-
-email_object.add_attribute('from-display-name', value=isight_alert.senderName, to_ids=False)
+if isight_alert.Description:
+#added for silobreaker
+email_object.add_attribute('from-display-name', value=isight_alert.Description, to_ids=False)
 
 if isight_alert.sourceIP:
 
