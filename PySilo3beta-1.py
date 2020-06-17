@@ -2,8 +2,8 @@
 
 # -*- coding: utf-8 -*-
 
-#PySilo3beta.py
-
+#PySilo3beta-1.py
+#dmolina213
 import datetime
 
 import email.utils
@@ -68,31 +68,18 @@ def error_handling(e, a_string):
     :return:
     :rtype:
     """
-
-if hasattr(e, ‘Items’):
-
-PySilo_settings.logger.debug('%s %s', a_string, e.message)
-
-import traceback
-
-PySilo_settings.logger.debug('1 %s', e.__doc__)
-
-PySilo_settings.logger.debug('2 %s', sys.exc_info())
-
-PySilo_settings.logger.debug('3 %s', sys.exc_info()[0])
-
-PySilo_settings.logger.debug('4 %s', sys.exc_info()[1])
-
-#PySilo_settings.logger.debug('5 %s', sys.exc_info()[2], 'Sorry I mean line...',
-
-# traceback.tb_lineno(sys.exc_info()[2]))
-
-ex_type, ex, tb = sys.exc_info()
-
-PySilo_settings.logger.debug('6 %s', traceback.print_tb(tb))
-
-return sys, traceback
-
+    if hasattr(e, 'message'):
+        PySilo_settings.logger.debug('%s %s', a_string, e.message)
+    import traceback
+    PySilo_settings.logger.debug('1 %s', e.__doc__)
+    PySilo_settings.logger.debug('2 %s', sys.exc_info())
+    PySilo_settings.logger.debug('3 %s', sys.exc_info()[0])
+    PySilo_settings.logger.debug('4 %s', sys.exc_info()[1])
+    #PySilo_settings.logger.debug('5 %s', sys.exc_info()[2], 'Sorry I mean line...',
+    #                              traceback.tb_lineno(sys.exc_info()[2]))
+    ex_type, ex, tb = sys.exc_info()
+    PySilo_settings.logger.debug('6 %s', traceback.print_tb(tb))
+    return sys, traceback
 
 
 
