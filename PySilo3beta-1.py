@@ -4,7 +4,7 @@
 
 #PySilo3beta-1.py
 #dmolina213
-#1
+#2
 import datetime
 
 import email.utils
@@ -69,8 +69,8 @@ def error_handling(e, a_string):
     :return:
     :rtype:
     """
-    if hasattr(e, 'message'):
-        PySilo_settings.logger.debug('%s %s', a_string, e.message)
+    if hasattr(e, 'Items'):
+        PySilo_settings.logger.debug('%s %s', a_string, e.Items)
     import traceback
     PySilo_settings.logger.debug('1 %s', e.__doc__)
     PySilo_settings.logger.debug('2 %s', sys.exc_info())
@@ -468,7 +468,7 @@ def update_misp_event(misp_instance, event, isight_alert):
     # Lastly, publish the event without sending an alert email.
     # This command expects the event ID instead of a MISPevent as argument.
     print('#####publishing event:', event['id'])
-    PySilo_settings.logger.debug('#####publishing event: %s', event['id'],isight_alert.reportId) 
+    PySilo_settings.logger.debug('#####publishing event: %s', event['id'],isight_alert.ID) 
     event.attribute.add_tag('ISIGHT APIv3')                                                
     #misp_instance.publish(event['id'], alert=False)
 
@@ -507,7 +507,7 @@ def create_misp_event(misp_instance, isight_report_instance):
     print("#######Push event to MISP server####",my_event)
 
            
-    PySilo_settings.logger.debug('Created MISP event %s for iSight report %s', event, isight_report_instance.reportId)
+    PySilo_settings.logger.debug('Created MISP event %s for iSight report %s', event, isight_report_instance.Id)
 
     # Add default tags to the event.
     misp_instance.tag(my_event, 'Source:SILOBREAKER')
