@@ -205,7 +205,7 @@ def update_misp_event(misp_instance, event, isight_alert):
 
    #silobreaker stuff added by dmolna213
    if isight_alert.Type='Email':
-      default_comment=isight_alert.EntityReference
+      default_comment==isight_alert.EntityReference
    else: 
       default_comment = ''
 
