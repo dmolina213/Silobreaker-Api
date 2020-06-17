@@ -247,7 +247,7 @@ def update_misp_event(misp_instance, event, isight_alert):
 
       default_comment = isight_alert.malwareFamily
 
-    else:
+   else:
 
        default_comment = ''
 
