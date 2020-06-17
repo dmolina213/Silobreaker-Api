@@ -4,7 +4,7 @@
 
 #PySilo3beta-1.py
 #dmolina213
-#2----2
+#3----3
 import datetime
 
 import email.utils
@@ -119,14 +119,11 @@ def misp_process_isight_indicators(a_result):
 
     # Process each indicator in the JSON message
 
-    for indicator in a_result['Items']:
+    for indicator in a_result['message']:
+        Print("#####indicator#####",indicator)
+        PySilo_settings.logger.debug('Processing report %s', indicator['reportId'])
 
-      Print("#####indicator#####",indicator)
-
-      PySilo_settings.logger.debug('Processing report %s', indicator['Id'])
-    if PySilo_settings.use_threading:
-
-    if PySilo_settings.use_threading:
+        if PySilo_settings.use_threading:
             # Use threads to process the indicators
             print('***threading****')
             # First, set the maximum number of threads
