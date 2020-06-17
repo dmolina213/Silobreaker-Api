@@ -672,243 +672,125 @@ def get_misp_instance():
 
 #Create a new MISP event.
 
-def create_misp_event(misp_instance):
-
-# No MISP event for this iSight report ID exists yet.
-
-# Alas, create a new MISP event.
-
-
-
-# Convert the publication date of the iSight report into a datetime object.
-
-#if isight_report_instance.publishDate:
-
-# date = datetime.datetime.fromtimestamp(isight_report_instance.publishDate)
-
-#else:
-
-# If iSight doesn't provide a date, use today's date.
-
-#date = datetime.datetime.now(datetime.timezone.utc)
-
-
-
-# Create a MISP event from the FireEye iSight report with the following parameters.
-
-print('****create new event*****')
-
-event = MISPEvent()
-
-event.distribution = 1 # This community only
-
-if isight_report_instance.riskRating == 'CRITICAL' or isight_report_instance.riskRating == 'Critical':
-
-event.threat_level_id = 1 # High
-
-elif isight_report_instance.riskRating == 'HIGH' or isight_report_instance.riskRating == 'High':
-
-event.threat_level_id = 1 # High
-
-elif isight_report_instance.riskRating == 'MEDIUM' or isight_report_instance.riskRating == 'Medium':
-
-event.threat_level_id = 2 # Medium
-
-elif isight_report_instance.riskRating == 'LOW' or isight_report_instance.riskRating == 'Low':
-
-event.threat_level_id = 3 # Low
-
-else:
-
-event.threat_level_id = 4 # Unknown
-
-event.analysis = 2 # Completed
-
-event.info = "iSIGHT: " + isight_report_instance.Description
-
-event.date = date
-
-
-
-# Push the event to the MISP server.
-
-my_event = misp_instance.add_event(event, pythonify=True)
-
-print("#######Push event to MISP server####",my_event)
-
-
-
-
-
-PySilo_settings.logger.debug('Created MISP event %s for iSight report %s', event, isight_report_instance.Id)
-
-
-
-# Add default tags to the event.
-
-misp_instance.tag(my_event, 'Source:SILOBREAKER')
-
-#misp_instance.tag(my_event, 'basf:source="iSight"')
-
-misp_instance.tag(my_event, 'CTI feed: SILOBREAKER')
-
-misp_instance.tag(my_event, 'tlp:amber')
-
-#misp_instance.tag(my_event, 'report id', isight_report_instance.Id)
-
-
-
-
-
-
-
-# Use some iSight ThreatScapes for event tagging. Reports can have multiple ThreatScapes.
-
-if 'Cyber Espionage' in isight_report_instance.ThreatScape:
-
-# VERIS distinguishes between external, internal or partner actors. This difference is not yet implemented in
-
-# MISP. External would be most likely.
-
-misp_instance.tag(my_event, 'veris:actor:external:motive="Espionage"')
-
-misp_instance.tag(my_event, 'veris:actor:motive="Espionage"')
-
-if 'Hacktivism' in isight_report_instance.ThreatScape:
-
-misp_instance.tag(my_event, 'veris:actor:external:variety="Activist"')
-
-if 'Critical Infrastructure' in isight_report_instance.ThreatScape:
-
-misp_instance.tag(my_event, 'basf:technology="OT"')
-
-if 'Cyber Physical' in isight_report_instance.ThreatScape:
-
-misp_instance.tag(my_event, 'basf:technology="OT"')
-
-if 'Cyber Crime' in isight_report_instance.ThreatScape:
-
-misp_instance.tag(my_event, 'veris:actor:external:variety="Organized crime"')
-
-
+def create_misp_event(misp_instance,isight_report_instance):
+    # No MISP event for this iSight report ID exists yet.
+    # Alas, create a new MISP event.
+
+    # Convert the publication date of the iSight report into a datetime object.
+    #if isight_report_instance.publishDate:
+       # date = datetime.datetime.fromtimestamp(isight_report_instance.publishDate)
+    #else:
+        # If iSight doesn't provide a date, use today's date.
+        #date = datetime.datetime.now(datetime.timezone.utc)
+
+    # Create a MISP event from the FireEye iSight report with the following parameters.
+    print('****create new event*****')
+    event = MISPEvent()
+    event.distribution = 1  # This community only
+    if isight_report_instance.riskRating == 'CRITICAL' or isight_report_instance.riskRating == 'Critical':
+        event.threat_level_id = 1  # High
+    elif isight_report_instance.riskRating == 'HIGH' or isight_report_instance.riskRating == 'High':
+        event.threat_level_id = 1  # High
+    elif isight_report_instance.riskRating == 'MEDIUM' or isight_report_instance.riskRating == 'Medium':
+        event.threat_level_id = 2  # Medium
+    elif isight_report_instance.riskRating == 'LOW' or isight_report_instance.riskRating == 'Low':
+        event.threat_level_id = 3  # Low
+    else:
+        event.threat_level_id = 4  # Unknown
+    event.analysis = 2  # Completed
+    event.info = "iSIGHT: " + isight_report_instance.title
+    event.date = date
+
+    # Push the event to the MISP server.
+    my_event = misp_instance.add_event(event, pythonify=True)
+    print("#######Push event to MISP server####",my_event)
+
+           
+    PySilo_settings.logger.debug('Created MISP event %s for iSight report %s', event, isight_report_instance.reportId)
+
+    # Add default tags to the event.
+    misp_instance.tag(my_event, 'Source:SILOBREAKER')
+    #misp_instance.tag(my_event, 'basf:source="iSight"')
+    misp_instance.tag(my_event, 'CTI feed: SILOBREAKER')
+    misp_instance.tag(my_event, 'tlp:amber')
+    #misp_instance.tag(my_event, 'report id', isight_report_instance.reportId)
+    
+                                                                     
+
+   # Use some iSight ThreatScapes for event tagging. Reports can have multiple ThreatScapes.
+    if 'Cyber Espionage' in isight_report_instance.ThreatScape:
+        # VERIS distinguishes between external, internal or partner actors. This difference is not yet implemented in
+        # MISP. External would be most likely.
+        misp_instance.tag(my_event, 'veris:actor:external:motive="Espionage"')
+        misp_instance.tag(my_event, 'veris:actor:motive="Espionage"')
+    if 'Hacktivism' in isight_report_instance.ThreatScape:
+        misp_instance.tag(my_event, 'veris:actor:external:variety="Activist"')
+    if 'Critical Infrastructure' in isight_report_instance.ThreatScape:
+        misp_instance.tag(my_event, 'basf:technology="OT"')
+    if 'Cyber Physical' in isight_report_instance.ThreatScape:
+        misp_instance.tag(my_event, 'basf:technology="OT"')
+    if 'Cyber Crime' in isight_report_instance.ThreatScape:
+        misp_instance.tag(my_event, 'veris:actor:external:variety="Organized crime"')
 
 
 
 ################################start################################
-
 # Command line arguments 
 
-
-
 parser = argparse.ArgumentParser()
-
 parser.add_argument("URL", help="the endpoint of the API, inside quotation marks")
-
 parser.add_argument("-P", "--POST", help="perform a POST request. Data can be modified in post_data.json", action='store_true')
-
 args = parser.parse_args()
-
-
 
 url = parse.quote(args.URL, safe=":/?&=")
 
-
-
 with open("secrets.json") as f: # The secrets file has the same format as the node example.
-
-secrets = json.load(f)
-
-
+    secrets = json.load(f)
 
 sharedKey = secrets["SharedKey"]
-
 apiKey = secrets["ApiKey"]
 
-
-
 if args.POST:
+    verb = "POST"
+    with open('post_data.json', 'rb') as f:
+        body = f.read()
 
-verb = "POST"
+    # Sign the URL
+    urlSignature = verb + " " + url
+    message = urlSignature.encode() + body
 
-with open('post_data.json', 'rb') as f:
+    hmac_sha1 = hmac.new(sharedKey.encode(), message, digestmod=hashlib.sha1)
+    digest = base64.b64encode(hmac_sha1.digest())
 
-body = f.read()
+    # Fetch the data
 
-
-
-# Sign the URL
-
-urlSignature = verb + " " + url
-
-message = urlSignature.encode() + body
-
-
-
-hmac_sha1 = hmac.new(sharedKey.encode(), message, digestmod=hashlib.sha1)
-
-digest = base64.b64encode(hmac_sha1.digest())
-
-
-
-# Fetch the data
-
-
-
-final_url = url + "?apiKey=" + apiKey + "&digest=" + urllib.parse.quote(digest.decode())
-
-req = urllib.request.Request(final_url, data=body, headers={'Content-Type': 'application/json'})
-
-
+    final_url = url + "?apiKey=" + apiKey + "&digest=" + urllib.parse.quote(digest.decode())
+    req = urllib.request.Request(final_url, data=body, headers={'Content-Type': 'application/json'})
 
 else:
+    verb = "GET"
+    message = verb + " " + url
 
-verb = "GET"
+    # Sign the URL
 
-message = verb + " " + url
+    hmac_sha1 = hmac.new(sharedKey.encode(), message.encode(), digestmod=hashlib.sha1)
+    digest = base64.b64encode(hmac_sha1.digest())
 
+    # Fetch the data
 
-
-# Sign the URL
-
-
-
-hmac_sha1 = hmac.new(sharedKey.encode(), message.encode(), digestmod=hashlib.sha1)
-
-digest = base64.b64encode(hmac_sha1.digest())
-
-
-
-# Fetch the data
-
-
-
-final_url = url + "&apiKey=" + apiKey + "&digest=" + urllib.parse.quote(digest.decode())
-
-req = urllib.request.Request(final_url)
-
-
-
+    final_url = url + "&apiKey=" + apiKey + "&digest=" + urllib.parse.quote(digest.decode())
+    req = urllib.request.Request(final_url)
 
 
 # Perform the request
 
-
-
 with urllib.request.urlopen(req) as response:
-
-responseJson = response.read()
-
-
+    responseJson = response.read()
 
 # Pretty print the data
 
-
-
 responseObject = json.loads(responseJson.decode("utf-8"))
-
 result=json.dumps(responseObject, sort_keys=True, indent=2, separators=(',', ': '))
-
-misp_process_isight_indicators(responseObject)
-
+misp_process_isight_indicators(result)
 print(json.dumps(responseObject, sort_keys=True, indent=2, separators=(',', ': ')))
 
