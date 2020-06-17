@@ -119,9 +119,9 @@ def misp_process_isight_indicators(a_result):
 
     # Process each indicator in the JSON message
 
-    for indicator in a_result['message']:
+    for indicator in a_result['Items']:
         Print("#####indicator#####",indicator)
-        PySilo_settings.logger.debug('Processing report %s', indicator['reportId'])
+        PySilo_settings.logger.debug('Processing report %s', indicator['Id'])
 
         if PySilo_settings.use_threading:
             # Use threads to process the indicators
@@ -254,7 +254,7 @@ def update_misp_event(misp_instance, event, isight_alert):
 
 
     # If the alert contains email indicators, create an email object.
-     if isight_alert.emailIdentifier:
+   if isight_alert.emailIdentifier:
         # If emailLanguage is provided, add it to the default comment.
         if isight_alert.emailLanguage:
             add_comment = 'Email language: ' + isight_alert.emailLanguage
@@ -286,7 +286,7 @@ def update_misp_event(misp_instance, event, isight_alert):
         event.add_object(email_object)
 
     # If the report contains an MD5 hash, create a file object.
-    if isight_alert.md5:
+   if isight_alert.md5:
         # If a file description is given, add it to the default comment.
         if isight_alert.description:
             add_comment = isight_alert.description
@@ -327,18 +327,18 @@ def update_misp_event(misp_instance, event, isight_alert):
         event.add_object(file_object)
 
     # If the report contains a user agent string, create a user-agent attribute.
-    if isight_alert.userAgent:
+   if isight_alert.userAgent:
         event.add_attribute(category='Network activity', type='user-agent', value=isight_alert.userAgent,
                             to_ids=network_ids, comment=default_comment)
 
     # If the report contains an ASN, create an AS attribute.
-    if isight_alert.asn:
+   if isight_alert.asn:
         # Don't use the ASN for detection.
         event.add_attribute(category='Network activity', type='AS', value=isight_alert.asn, to_ids=False,
                             comment=default_comment)
 
     # If the report contains a domain, create a hostname attribute (because iSight domain names are in fact hostnames).
-    if isight_alert.domain:
+   if isight_alert.domain:
         # If an IP address is provided with a hostname, put the IP address in a comment, possibly in addition to the
         # default network comment.
         if isight_alert.ip:
@@ -372,7 +372,7 @@ def update_misp_event(misp_instance, event, isight_alert):
             new_attr.add_tag('vIsight:APIv3')
     # If the report doesn't contain a hostname but contains an IP address, create an ip-src or ip-dst attribute.
     # TODO: Is there a better way to determine whether it's a source or destination IP address?
-    elif isight_alert.ip:
+   elif isight_alert.ip:
         # Add the protocol to the comment if it is provided by iSight.
         if isight_alert.protocol:
             add_comment = isight_alert.protocol
@@ -414,7 +414,7 @@ def update_misp_event(misp_instance, event, isight_alert):
             new_attr.add_tag('veris:action:malware:variety="C2"')
 
     # If the report contains a domain registrant email address, then create a whois attribute.
-    if isight_alert.registrantEmail:
+   if isight_alert.registrantEmail:
         whois_object = MISPObject('whois')
         whois_object.comment = default_comment
         whois_object.add_attribute('registrant-email', value=isight_alert.registrantEmail, to_ids=network_ids)
@@ -427,7 +427,7 @@ def update_misp_event(misp_instance, event, isight_alert):
         event.add_object(whois_object)
 
     # If the report contains a URL, create a url attribute.
-    if isight_alert.url:
+   if isight_alert.url:
         event.add_attribute(category='Network activity', type='url', value=isight_alert.url, to_ids=network_ids,
                             comment=default_comment)
         if isight_alert.networkType == 'C&C':
@@ -436,7 +436,7 @@ def update_misp_event(misp_instance, event, isight_alert):
 
     # If the report contains registry information, create a regkey attribute.
     # Ideally, the registry field would be split into hive, key and value.
-    if isight_alert.registry:
+   if isight_alert.registry:
         # If a file description is given, add it to the default comment.
         if isight_alert.description:
             add_comment = isight_alert.description
@@ -450,24 +450,24 @@ def update_misp_event(misp_instance, event, isight_alert):
                             comment=reg_comment)
 
     # If the report contains a malware family, create a malware-type attribute.
-    if isight_alert.malwareFamily:
+   if isight_alert.malwareFamily:
         event.add_attribute(category='Antivirus detection', type='text', value=isight_alert.malwareFamily,
                             to_ids=False)
 
     # If the report contains an actor, create a threat-actor attribute.
-    if isight_alert.actor:
+   if isight_alert.actor:
         # Don't use the threat actor for detection.
         event.add_attribute(category='Attribution', type='threat-actor', value=isight_alert.actor, to_ids=False)
 
     # Finally, commit the event additions to the MISP instance.
-    misp_instance.update_event(event)
+   misp_instance.update_event(event)
 
     # Lastly, publish the event without sending an alert email.
     # This command expects the event ID instead of a MISPevent as argument.
-    print('#####publishing event:', event['id'])
-    PySilo_settings.logger.debug('#####publishing event: %s', event['id'],isight_alert.ID) 
-    event.attribute.add_tag('ISIGHT APIv3')                                                
-    #misp_instance.publish(event['id'], alert=False)
+   print('#####publishing event:', event['id'])
+   PySilo_settings.logger.debug('#####publishing event: %s', event['id'],isight_alert.ID) 
+   event.attribute.add_tag('ISIGHT APIv3')                                                
+   #misp_instance.publish(event['id'], alert=False)
 
     # Create a new MISP event.
 def create_misp_event(misp_instance, isight_report_instance):
@@ -624,7 +624,7 @@ def process_isight_indicator(a_json):
             update_misp_event(this_misp_instance, event,isight_report_instance)
 
         # Reset the iSight report instance when done.
-         isight_report_instance = None
+        isight_report_instance = None
 
         # Release the semaphore (increase the counter in the semaphore).
         if PySilo_settings.use_threading:
