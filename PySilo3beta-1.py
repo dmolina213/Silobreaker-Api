@@ -60,21 +60,14 @@ urllib3.disable_warnings()
 
 def error_handling(e, a_string):
 
-"""
-
-:param e:
-
-:type e:
-
-:param a_string:
-
-:type a_string:
-
-:return:
-
-:rtype:
-
-"""
+    """
+    :param e:
+    :type e:
+    :param a_string:
+    :type a_string:
+    :return:
+    :rtype:
+    """
 
 if hasattr(e, ‘Items’):
 
