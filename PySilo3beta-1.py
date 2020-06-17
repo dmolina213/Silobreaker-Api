@@ -237,7 +237,7 @@ def update_misp_event(misp_instance, event, isight_alert):
 
    else:
 
-   network_ids = False
+      network_ids = False
 
 
 
