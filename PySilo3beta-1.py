@@ -4,7 +4,7 @@
 
 #PySilo3beta-1.py
 #dmolina213
-#3----3
+#4----4
 import datetime
 
 import email.utils
@@ -171,7 +171,7 @@ def misp_check_for_previous_event(misp_instance, isight_alert):
        #     event = check_misp_all_results(result)
 
     if not result:
-        PySilo_settings.logger.debug('Found no existing event for iSight report ID %s', isight_alert.reportId)
+        PySilo_settings.logger.debug('Found no existing event for iSight report ID %s', isight_alert.Id)
 
     return event
 # Update an existing MISP event.
@@ -541,7 +541,7 @@ def check_misp_all_results(a_result):
     :rtype:
     """
     # PySilo_settings.logger.debug('Checking %s if it contains previous events', a_result)
-    if 'message' in a_result:
+    if 'Items' in a_result:
         if a_result['Items'] == 'No matches.':
             PySilo_settings.logger.debug('No existing MISP event found')
             # has really no event
@@ -584,7 +584,7 @@ def process_isight_indicator(a_json):
         #threading used here
         if PySilo_settings.use_threading:
             thread_limiter.acquire()
-        PySilo_settings.logger.debug("max number %s current number: ", thread_limiter._initial_value, )
+        #PySilo_settings.logger.debug("max number %s current number: ", thread_limiter._initial_value, )
 
         # Parse the FireEye iSight report
         isight_report_instance = PySiloReport(a_json)
@@ -697,7 +697,7 @@ def create_misp_event(misp_instance,isight_report_instance):
         event.threat_level_id = 4  # Unknown
     event.analysis = 2  # Completed
     event.info = "iSIGHT: " + isight_report_instance.title
-    event.date = date
+    #event.date = date
 
     # Push the event to the MISP server.
     my_event = misp_instance.add_event(event, pythonify=True)
@@ -786,9 +786,8 @@ with urllib.request.urlopen(req) as response:
     responseJson = response.read()
 
 # Pretty print the data
-
 responseObject = json.loads(responseJson.decode("utf-8"))
-result=json.dumps(responseObject, sort_keys=True, indent=2, separators=(',', ': '))
-misp_process_isight_indicators(result)
-print(json.dumps(responseObject, sort_keys=True, indent=2, separators=(',', ': ')))
+#misp_process_isight_indicators(result)	
+#print(json.dumps(responseObject, sort_keys=True, indent=2, separators=(',', ': ')))	
+misp_process_isight_indicators(responseObject)
 
