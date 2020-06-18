@@ -469,69 +469,7 @@ def update_misp_event(misp_instance, event, isight_alert):
    event.attribute.add_tag('ISIGHT APIv3')                                                
    #misp_instance.publish(event['id'], alert=False)
 
-    # Create a new MISP event.
-def create_misp_event(misp_instance, isight_report_instance):
-    # No MISP event for this iSight report ID exists yet.
-    # Alas, create a new MISP event.
 
-    # Convert the publication date of the iSight report into a datetime object.
-    if isight_report_instance.publishDate:
-        date = datetime.datetime.fromtimestamp(isight_report_instance.publishDate)
-    else:
-        # If iSight doesn't provide a date, use today's date.
-        date = datetime.datetime.now(datetime.timezone.utc)
-
-    # Create a MISP event from the FireEye iSight report with the following parameters.
-    print('****create new event*****')
-    event = MISPEvent()
-    event.distribution = 1  # This community only
-    if isight_report_instance.riskRating == 'CRITICAL' or isight_report_instance.riskRating == 'Critical':
-        event.threat_level_id = 1  # High
-    elif isight_report_instance.riskRating == 'HIGH' or isight_report_instance.riskRating == 'High':
-        event.threat_level_id = 1  # High
-    elif isight_report_instance.riskRating == 'MEDIUM' or isight_report_instance.riskRating == 'Medium':
-        event.threat_level_id = 2  # Medium
-    elif isight_report_instance.riskRating == 'LOW' or isight_report_instance.riskRating == 'Low':
-        event.threat_level_id = 3  # Low
-    else:
-        event.threat_level_id = 4  # Unknown
-    event.analysis = 2  # Completed
-    event.info = "iSIGHT: " + isight_report_instance.title
-    event.date = date
-
-    # Push the event to the MISP server.
-    my_event = misp_instance.add_event(event, pythonify=True)
-    print("#######Push event to MISP server####",my_event)
-
-           
-    PySilo_settings.logger.debug('Created MISP event %s for iSight report %s', event, isight_report_instance.Id)
-
-    # Add default tags to the event.
-    misp_instance.tag(my_event, 'Source:SILOBREAKER')
-    #misp_instance.tag(my_event, 'basf:source="iSight"')
-    misp_instance.tag(my_event, 'CTI feed: SILOBREAKER')
-    misp_instance.tag(my_event, 'tlp:amber')
-    misp_instance.tag(my_event, 'report id', isight_report_instance.Id)
-    
-                                                                     
-
-    # Use some iSight ThreatScapes for event tagging. Reports can have multiple ThreatScapes.
-    #if 'Cyber Espionage' in isight_report_instance.ThreatScape:
-        # VERIS distinguishes between external, internal or partner actors. This difference is not yet implemented in
-        # MISP. External would be most likely.
-        #misp_instance.tag(my_event, 'veris:actor:external:motive="Espionage"')
-        #misp_instance.tag(my_event, 'veris:actor:motive="Espionage"')
-    #if 'Hacktivism' in isight_report_instance.ThreatScape:
-        #misp_instance.tag(my_event, 'veris:actor:external:variety="Activist"')
-    #if 'Critical Infrastructure' in isight_report_instance.ThreatScape:
-       # misp_instance.tag(my_event, 'basf:technology="OT"')
-    #if 'Cyber Physical' in isight_report_instance.ThreatScape:
-        #misp_instance.tag(my_event, 'basf:technology="OT"')
-    #if 'Cyber Crime' in isight_report_instance.ThreatScape:
-        #misp_instance.tag(my_event, 'veris:actor:external:variety="Organized crime"')
-
-   
-    update_misp_event(misp_instance, my_event, isight_report_instance)
 
 def check_misp_all_results(a_result):
     """
@@ -729,7 +667,7 @@ def create_misp_event(misp_instance,isight_report_instance):
         misp_instance.tag(my_event, 'basf:technology="OT"')
     if 'Cyber Crime' in isight_report_instance.ThreatScape:
         misp_instance.tag(my_event, 'veris:actor:external:variety="Organized crime"')
-
+ update_misp_event(misp_instance, my_event, isight_report_instance)
 
 
 ################################start################################
